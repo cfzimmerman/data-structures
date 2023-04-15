@@ -24,7 +24,7 @@ const randNums = (length: number, acc: number[] = []): number[] => {
   if (length <= 0) {
     return acc;
   }
-  const num = Math.floor(Math.random() * 21) - 10;
+  const num = Math.floor(Math.random() * 42) - 20;
   acc.push(num);
   return randNums(length - 1, acc);
 };
@@ -32,9 +32,7 @@ const randNums = (length: number, acc: number[] = []): number[] => {
 const testNumMinHeap = () => {
   console.log("\nTesting number heap:");
   const hp = new Heap(minNumHeap);
-  const sample: number[] = /* randNums(10) */ [
-    8, -2, 0, 3, -5, 0, -8, -6, -2, 0,
-  ];
+  const sample: number[] = randNums(10);
 
   assert(hp.size() === 0, "create heap");
 
@@ -47,9 +45,9 @@ const testNumMinHeap = () => {
 
   assert(hp.peek() === sample[0], "peek");
 
-  sample.forEach((num: number) => {
-    quietAssert(hp.pop() === num, `popped ordered values ${num}`);
-  });
+  sample.forEach((num: number) =>
+    quietAssert(hp.pop() === num, `popped ordered values ${num}`)
+  );
 
   assert(hp.size() === 0, "all values popped in priority order");
 };

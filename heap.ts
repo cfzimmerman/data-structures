@@ -18,6 +18,7 @@ Heap Invariant: Nodes with higher priority are never below nodes with lower prio
 /* 
 Returns -1 if a is less than b, 0 if a is equal to b, 1 if a greater than b.
 The top element of the heap has compare 1 over every other element in the heap.
+Think of compare in terms of priority. If a has higher priority than b, return 1.
 
 Example compare function for a number Min-Heap:
 const compare = (a: number, b: number): number => {
@@ -168,22 +169,16 @@ export class Heap<T> {
     const compareLeft = this.compare(this.heap[index], this.heap[leftIndex]);
     const compareRight = this.compare(this.heap[index], this.heap[rightIndex]);
     const compareLR = this.compare(this.heap[leftIndex], this.heap[rightIndex]);
-    if (compareLeft < 0 && compareRight >= 0) {
+    if (compareLeft < 0 && compareLR >= 0) {
       // The left child is greater than the parent and the right child
       this.swap(index, leftIndex);
       return this.bubbleDown(leftIndex);
     }
-    if (compareLeft >= 0 && compareRight < 0) {
+    if (compareRight < 0 && compareLR <= 0) {
       // The right child is greater than the parent and the left child
       this.swap(index, rightIndex);
       return this.bubbleDown(rightIndex);
     }
-    // Both children have higher priority than the parent. Swap with the child who has highest priority.
-    if (compareLR >= 0) {
-      this.swap(index, leftIndex);
-      return this.bubbleDown(leftIndex);
-    }
-    this.swap(index, rightIndex);
-    return this.bubbleDown(rightIndex);
+    // The parent has greater priority than both children
   }
 }
