@@ -1,8 +1,10 @@
 // ts-node --esm testHeap.ts
 
-import { Heap } from "./heap";
+import { Heap } from "../heap";
+import { assert, quietAssert } from "./miniTest";
 
-const minNumHeap = (a: number, b: number) => {
+// Comparison function for a number Min-Heap
+const minNumHeap = (a: number, b: number): number => {
   if (a < b) {
     return 1;
   }
@@ -12,6 +14,12 @@ const minNumHeap = (a: number, b: number) => {
   return -1;
 };
 
+// Comparison function for JS array.sort matching minNumHeap
+const sortLtoG = (a: number, b: number): number => {
+  return -1 * minNumHeap(a, b);
+};
+
+// Generates random numbers between -10 and 10
 const randNums = (length: number, acc: number[] = []): number[] => {
   if (length <= 0) {
     return acc;
@@ -21,8 +29,29 @@ const randNums = (length: number, acc: number[] = []): number[] => {
   return randNums(length - 1, acc);
 };
 
-const hp = new Heap(minNumHeap);
+const testNumMinHeap = () => {
+  console.log("\nTesting number heap:");
+  const hp = new Heap(minNumHeap);
+  const sample: number[] = /* randNums(10) */ [
+    8, -2, 0, 3, -5, 0, -8, -6, -2, 0,
+  ];
 
-console.log(randNums(10));
+  assert(hp.size() === 0, "create heap");
 
-// hp.print();
+  sample.forEach((num: number) => hp.push(num));
+
+  assert(hp.size() === sample.length, "fill heap");
+
+  // Now that the numbers are inserted, sort the array and test for correctness
+  sample.sort(sortLtoG);
+
+  assert(hp.peek() === sample[0], "peek");
+
+  sample.forEach((num: number) => {
+    quietAssert(hp.pop() === num, `popped ordered values ${num}`);
+  });
+
+  assert(hp.size() === 0, "all values popped in priority order");
+};
+
+testNumMinHeap();

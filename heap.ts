@@ -6,7 +6,7 @@ HEAP
 Stores an ordered collection of elements by priority, with the highest-priority 
 element being at the top.  This heap is implemented as a list-based binary tree.
 
-Offers:
+Attributes:
   - Constant time lookup of the highest priority element
   - O(log(n)) insertion [worst case]
   - O(log(n)) deletion of the top element in the heap [worst case]
@@ -18,6 +18,17 @@ Heap Invariant: Nodes with higher priority are never below nodes with lower prio
 /* 
 Returns -1 if a is less than b, 0 if a is equal to b, 1 if a greater than b.
 The top element of the heap has compare 1 over every other element in the heap.
+
+Example compare function for a number Min-Heap:
+const compare = (a: number, b: number): number => {
+  if (a < b) {
+    return 1;
+  }
+  if (a === b) {
+    return 0;
+  }
+  return -1;
+};
 */
 type ComparePriority<T> = (a: T, b: T) => number;
 
@@ -70,11 +81,6 @@ export class Heap<T> {
   /* Removes all elements from the heap */
   empty(): void {
     this.heap = [];
-  }
-
-  /* Prints the heap array */
-  print(): void {
-    console.log(this.heap);
   }
 
   /* Returns the index of the parent node */
@@ -152,13 +158,13 @@ export class Heap<T> {
     if (!this.inHeap(rightIndex)) {
       // The left child is the final node in the tree
       if (this.compare(this.heap[index], this.heap[leftIndex]) < 0) {
-        // Left child has greater priority than the current node
+        // Swap if the left child has greater priority than the current node
         this.swap(index, leftIndex);
       }
-      // We don't need to check the left child because it's the last in the tree
+      // We don't need to recursively check the left child because it's the last in the tree
       return;
     }
-    // The current node is a branch with two leaves
+    // The current node is a branch with two children
     const compareLeft = this.compare(this.heap[index], this.heap[leftIndex]);
     const compareRight = this.compare(this.heap[index], this.heap[rightIndex]);
     const compareLR = this.compare(this.heap[leftIndex], this.heap[rightIndex]);
@@ -174,8 +180,10 @@ export class Heap<T> {
     }
     // Both children have higher priority than the parent. Swap with the child who has highest priority.
     if (compareLR >= 0) {
+      this.swap(index, leftIndex);
       return this.bubbleDown(leftIndex);
     }
+    this.swap(index, rightIndex);
     return this.bubbleDown(rightIndex);
   }
 }
