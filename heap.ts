@@ -4,7 +4,7 @@ HEAP
 2023, Cory Zimmerman
 
 Stores an ordered collection of elements by priority with the highest-priority 
-element being at the top. This heap is implemented as an array-based binary tree.
+element at the top. This heap is implemented as an array-based binary tree.
 
 Attributes:
   - Constant time lookup of the highest priority element
@@ -86,12 +86,31 @@ export class Heap<T> {
     this.heap = [];
   }
 
+  /* Adds an element to the heap. Then, pops the highest priority element. 
+      More efficient than push, then pop */
+  replace(el: T): T {
+    if (this.size() === 0 || this.compare(el, this.peek()) >= 0) {
+      // The heap is empty or the new element's priority is
+      // greater than the heap's max priority element
+      return el;
+    }
+    const popped: T = this.peek();
+    this.heap[0] = el;
+    this.bubbleDown(0);
+    return popped;
+  }
+
+  /* Prints the tree as an array. */
+  print() {
+    console.log(this.heap);
+  }
+
   /* Returns the index of the parent node */
   private parent(current: number): number {
     if (current <= 0) {
       throw `No parent for index ${current}`;
     }
-    return Math.floor(current / 2);
+    return Math.floor((current - 1) / 2);
   }
 
   /* Returns the index of the left child node */
