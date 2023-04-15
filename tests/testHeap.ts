@@ -32,7 +32,7 @@ const randNums = (length: number, acc: number[] = []): number[] => {
 const testNumMinHeap = () => {
   console.log("\nTesting number heap:");
   const hp = new Heap(minNumHeap);
-  const sample: number[] = randNums(10);
+  const sample: number[] = randNums(20);
 
   assert(hp.size() === 0, "create heap");
 

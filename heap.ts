@@ -3,21 +3,23 @@
 HEAP
 2023, Cory Zimmerman
 
-Stores an ordered collection of elements by priority, with the highest-priority 
-element being at the top.  This heap is implemented as a list-based binary tree.
+Stores an ordered collection of elements by priority with the highest-priority 
+element being at the top. This heap is implemented as an array-based binary tree.
 
 Attributes:
   - Constant time lookup of the highest priority element
   - O(log(n)) insertion [worst case]
   - O(log(n)) deletion of the top element in the heap [worst case]
 
-Heap Invariant: Nodes with higher priority are never below nodes with lower priority.
+Heap Invariant: The priority of a node is always greater than or equal the priority of the nodes below it.
 
 */
 
 /* 
-Returns -1 if a is less than b, 0 if a is equal to b, 1 if a greater than b.
-The top element of the heap has compare 1 over every other element in the heap.
+ComparePriority:
+Returns -1 if a's priority is less than b, 0 if a's priority is equal to b, 1 if a's 
+priority greater than b.
+The top element of the heap has compare 1 or 0 over every other element in the heap.
 Think of compare in terms of priority. If a has higher priority than b, return 1.
 
 Example compare function for a number Min-Heap:
@@ -109,12 +111,7 @@ export class Heap<T> {
 
   /* Given the indices of two nodes, swaps them */
   private swap(index1: number, index2: number): void {
-    if (
-      index1 < 0 ||
-      index2 < 0 ||
-      index1 >= this.heap.length ||
-      index2 >= this.heap.length
-    ) {
+    if (!this.inHeap(index1) || !this.inHeap(index2)) {
       throw `Indices out of bounds: swap ${index1} and ${index2}`;
     }
     const temp = this.heap[index1];
@@ -136,6 +133,7 @@ export class Heap<T> {
     }
     const parentIndex = this.parent(index);
     if (this.compare(this.heap[index], this.heap[parentIndex]) > 0) {
+      // Current element's priority is higher than its parent's priority. Bubble up
       this.swap(index, parentIndex);
       return this.bubbleUp(parentIndex);
     }
