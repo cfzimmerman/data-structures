@@ -1,7 +1,7 @@
 // ts-node --esm testHeap.ts
 
 import { Heap } from "../heap";
-import { assert, quietAssert } from "./miniTest";
+import { assert, quietAssert } from "../utils/miniTest";
 
 // Comparison function for a number Min-Heap
 const minNumHeap = (a: number, b: number): number => {
