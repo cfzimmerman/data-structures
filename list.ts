@@ -8,12 +8,15 @@ popTail
 peekTail
 pushTail 
 
-fold
+
+foldLeft
 map
 includes
 reverse
 serialize
 at
+replaceHead
+replaceTail
 
 */
 
@@ -37,6 +40,8 @@ export class List<T> {
         }
         const value = current.val;
         current = current.next;
+        // 🚨 Deep copy this
+        // Deep copy because we only want list values to be modified by explicit list methods.
         return { value, done: false };
       },
     };
