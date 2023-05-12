@@ -62,6 +62,38 @@ const testList = () => {
     testList.foldLeft(stringCatAcc, "") === testNums.reduce(stringCatAcc, ""),
     "foldLeft int to string"
   );
+
+  // Test map
+  const strMap = (el: number) => JSON.stringify(el);
+  let mapInd = 0;
+  for (const el of testList.map(strMap)) {
+    quietAssert(
+      el === strMap(testNums[mapInd]),
+      `strMap unexpectedly received ${el}`
+    );
+    mapInd++;
+  }
+  // Sending a message after the successful quiet assertions
+  assert(true, "map int to string");
+
+  // Test toArray
+  assert(Array.isArray(testList.toArray()), "toArray returns valid array");
+  assert(
+    JSON.stringify(testList.toArray()) === JSON.stringify(testNums),
+    "generated array has correct values"
+  );
+
+  // Test reverse
+  assert(
+    JSON.stringify(testList.reverse().toArray()) ===
+      JSON.stringify(testNums.reverse()),
+    "reverse first"
+  );
+  assert(
+    JSON.stringify(testList.reverse().toArray()) ===
+      JSON.stringify(testNums.reverse()),
+    "reverse second"
+  );
 };
 
 testList();

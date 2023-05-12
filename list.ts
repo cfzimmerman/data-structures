@@ -8,9 +8,9 @@ popTail
 peekTail
 pushTail 
 foldLeft
-
-
 map
+
+
 includes
 reverse
 serialize
@@ -146,6 +146,44 @@ export class List<T> {
     }
     const newAcc = fun(acc, start.val);
     return this.foldLeft(fun, newAcc, start.next);
+  }
+
+  /* map: returns a new list with each element defined by a function
+   * mapping from the original list. */
+  map<V>(fun: (el: T) => V): List<V> {
+    const newList = new List<V>();
+    for (const node of this) {
+      newList.pushTail(fun(node));
+    }
+    return newList;
+  }
+
+  /* reverse: reverses the list in-place. Returns the modified list. */
+  reverse(): List<T> {
+    const oldHead = this.head;
+    this.head = this.tail;
+    this.tail = oldHead;
+
+    const rev = (head: LNode<T>): void => {
+      if (!head) {
+        return;
+      }
+      const oldNext = head.next;
+      head.next = head.prev;
+      head.prev = oldNext;
+      rev(oldNext);
+    };
+    rev(oldHead);
+    return this;
+  }
+
+  /* toArray: creates an array from the list. */
+  toArray(): T[] {
+    const res: T[] = [];
+    for (const value of this) {
+      res.push(value);
+    }
+    return res;
   }
 
   /* singleton: creates a new list with only one node. */
