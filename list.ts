@@ -1,6 +1,18 @@
-/* List<T>
- * A dependency-free double linked list holding
- * elements of type T.
+/*
+ *
+ * LIST
+ * 2023, Cory Zimmerman
+ *
+ * Stores a mono-type collection of elements. Because the
+ * list is double-linked, it can also be used as a double
+ * ended queue.
+ *
+ * Supports iteration, fold, reverse, map, and more.
+ *
+ * Attributes:
+ * - Constant time head and tail CRUD
+ * - Linear time random lookup
+ *
  */
 
 type LNode<T> = {
