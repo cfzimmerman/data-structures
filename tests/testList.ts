@@ -94,6 +94,19 @@ const testList = () => {
       JSON.stringify(testNums.reverse()),
     "reverse second"
   );
+
+  // Test includes
+  assert(!testList.includes(999999999), "includes, doesn't contain");
+  assert(testList.includes(testNums[0]), "includes, does contain");
+
+  // Test at
+  for (let cursor = 0; cursor < testNums.length; cursor++) {
+    quietAssert(
+      testList.at(cursor) === testNums[cursor],
+      `testList.at(${cursor}) failed`
+    );
+  }
+  assert(testList.at(0) === testNums[0], "at returns correct values");
 };
 
 testList();

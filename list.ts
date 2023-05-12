@@ -9,11 +9,11 @@ peekTail
 pushTail 
 foldLeft
 map
-
-
-includes
 reverse
 serialize
+includes
+
+
 at
 
 */
@@ -163,7 +163,7 @@ export class List<T> {
     const oldHead = this.head;
     this.head = this.tail;
     this.tail = oldHead;
-
+    // rev is a recursive helper function
     const rev = (head: LNode<T>): void => {
       if (!head) {
         return;
@@ -184,6 +184,44 @@ export class List<T> {
       res.push(value);
     }
     return res;
+  }
+
+  /* includes: returns whether or not a value is currently in the list */
+  includes(el: T): boolean {
+    for (const value of this) {
+      if (value === el) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /* at: returns the value at the given index.
+   * May throw an error if the index is out of bounds.*/
+  at(index: number): T {
+    if (index < 0 || index >= this.size()) {
+      throw "at: invalid index, out of bounds";
+    }
+    const find = (
+      mode: "forward" | "backward",
+      head: LNode<T>,
+      index: number
+    ): T => {
+      if (head === null || index < 0) {
+        throw "findForward went out of bounds";
+      }
+      if (index === 0) {
+        return head.val;
+      }
+      const next = mode === "forward" ? head.next : head.prev;
+      return find(mode, next, index - 1);
+    };
+    // If the desired index is in the second half of the list, start
+    // at the back and work forward. Else, start at the front.
+    if (index / 2 > this.size() / 2) {
+      return find("backward", this.tail, index);
+    }
+    return find("forward", this.head, index);
   }
 
   /* singleton: creates a new list with only one node. */
