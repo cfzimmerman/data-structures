@@ -1,22 +1,7 @@
-/*
-
-size
-pushHead
-popHead
-peekHead
-popTail
-peekTail
-pushTail 
-foldLeft
-map
-reverse
-serialize
-includes
-
-
-at
-
-*/
+/* List<T>
+ * A dependency-free double linked list holding
+ * elements of type T.
+ */
 
 type LNode<T> = {
   val: T;
@@ -72,7 +57,7 @@ export class List<T> {
   }
 
   /* popHead: removes and returns the first node in the list.
-   * May trow an error if the list is empty. */
+   * May thow an error if the list is empty. */
   popHead(): T {
     if (this.size() === 0 || !this.head) {
       throw "cannot pop from empty list";
@@ -163,7 +148,7 @@ export class List<T> {
     const oldHead = this.head;
     this.head = this.tail;
     this.tail = oldHead;
-    // rev is a recursive helper function
+    // rev is a recursive helper function that swaps the relations of nodes
     const rev = (head: LNode<T>): void => {
       if (!head) {
         return;
