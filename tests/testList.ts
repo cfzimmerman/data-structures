@@ -45,6 +45,23 @@ const testList = () => {
     quietAssert(num === testList.popTail(), `popTail expected ${num}`);
   });
   assert(testList.size() === 0, "popTail removes values");
+
+  // Re-fill list for testing other methods
+  testNums.forEach((num: number) => {
+    testList.pushTail(num);
+  });
+
+  // Test foldLeft
+  const plusAcc = (x: number, y: number) => x + y;
+  assert(
+    testList.foldLeft(plusAcc, 0) === testNums.reduce(plusAcc, 0),
+    "foldLeft (+)"
+  );
+  const stringCatAcc = (acc: string, val: number) => acc + JSON.stringify(val);
+  assert(
+    testList.foldLeft(stringCatAcc, "") === testNums.reduce(stringCatAcc, ""),
+    "foldLeft int to string"
+  );
 };
 
 testList();

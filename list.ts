@@ -7,16 +7,14 @@ peekHead
 popTail
 peekTail
 pushTail 
-
-
 foldLeft
+
+
 map
 includes
 reverse
 serialize
 at
-replaceHead
-replaceTail
 
 */
 
@@ -31,6 +29,7 @@ export class List<T> {
   private head: LNode<T> = null;
   private tail: LNode<T> = this.head;
 
+  /* iterator: Enables for (const node of list) ... iteration */
   [Symbol.iterator](): Iterator<T> {
     let current: LNode<T> = this.head;
     return {
@@ -40,23 +39,24 @@ export class List<T> {
         }
         const value = current.val;
         current = current.next;
-        // 🚨 Deep copy this
-        // Deep copy because we only want list values to be modified by explicit list methods.
         return { value, done: false };
       },
     };
   }
 
+  /* size: returns the number of nodes in the list */
   size(): number {
     return this.sz;
   }
 
+  /* empty: removes all nodes from a list of any size */
   empty(): void {
     this.head = null;
     this.tail = this.head;
     this.sz = 0;
   }
 
+  /* pushHead: adds a node to the front of the list */
   pushHead(val: T): void {
     this.sz += 1;
     if (!this.head) {
@@ -71,6 +71,8 @@ export class List<T> {
     this.head = newNode;
   }
 
+  /* popHead: removes and returns the first node in the list.
+   * May trow an error if the list is empty. */
   popHead(): T {
     if (this.size() === 0 || !this.head) {
       throw "cannot pop from empty list";
@@ -86,6 +88,8 @@ export class List<T> {
     return oldHd.val;
   }
 
+  /* peekHead: returns the value of the first node in the list.
+   * May throw an error if the list is empty. */
   peekHead(): T {
     if (!this.head) {
       throw "cannot peek empty list";
@@ -93,6 +97,7 @@ export class List<T> {
     return this.head.val;
   }
 
+  /* pushTail: appends a value to the end of the list. */
   pushTail(val: T): void {
     this.sz += 1;
     if (!this.head || !this.tail) {
@@ -108,6 +113,8 @@ export class List<T> {
     this.tail = newNode;
   }
 
+  /* popTail: removes and returns the last value in the list.
+   * May throw an error if the list is empty. */
   popTail(): T {
     if (this.size() === 0 || !this.tail) {
       throw "cannot pop from empty list";
@@ -123,11 +130,22 @@ export class List<T> {
     return oldTl.val;
   }
 
+  /* peekTail: returns the last value in the list.
+   * May throw an error if the list is empty. */
   peekTail(): T {
     if (!this.tail) {
       throw "cannot peek empty list";
     }
     return this.tail.val;
+  }
+
+  /* fold_left: collapses the list into an accumulator by an input function. */
+  foldLeft<V>(fun: (acc: V, el: T) => V, acc: V, start = this.head): V {
+    if (start === null) {
+      return acc;
+    }
+    const newAcc = fun(acc, start.val);
+    return this.foldLeft(fun, newAcc, start.next);
   }
 
   /* singleton: creates a new list with only one node. */
