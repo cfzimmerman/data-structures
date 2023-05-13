@@ -23,11 +23,8 @@ const testQueue = () => {
       queue.size() === testData.length,
       `push and peek inserted and read ${queue.size()} elements correctly`
     );
-
-    console.log(testData);
-    queue.print();
-
     let counter = 0;
+
     // Test pop
     for (const el of testData) {
       counter += 1;

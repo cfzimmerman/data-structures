@@ -40,7 +40,7 @@ export class Queue<T> {
   pop(): T {
     this.checkRebalance();
     const res = this.front.pop();
-    if (!res) {
+    if (typeof res === "undefined") {
       throw "cannot pop empty queue";
     }
     return res;
@@ -52,12 +52,6 @@ export class Queue<T> {
   peek(): T {
     this.checkRebalance();
     return this.front[this.front.length - 1];
-  }
-
-  /* print: console logs the queue (for debugging purposes) */
-  print(): void {
-    console.log("front: ", this.front);
-    console.log("back: ", this.back);
   }
 
   /* checkRebalance: convenience wrapper around rebalance for greater
