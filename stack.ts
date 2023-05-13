@@ -32,7 +32,7 @@ export class Stack<T> {
    * May throw an error if the stack is empty. */
   pop(): T {
     const res = this.st.pop();
-    if (!res) {
+    if (typeof res === "undefined") {
       throw "cannot pop empty stack";
     }
     return res;
